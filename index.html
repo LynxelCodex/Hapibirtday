@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Po hehe❤️</title>
+  <meta name="description" content="A magical birthday surprise crafted with love for someone incredibly special.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- GSAP (loaded globally) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- Three.js Import Map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- ===== GLOBAL SVG GRADIENTS ===== -->
+  <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="pink-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#E87AA4" />
+        <stop offset="50%" stop-color="#F8B4C8" />
+        <stop offset="100%" stop-color="#FFD700" />
+      </linearGradient>
+      <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FFE082" />
+        <stop offset="50%" stop-color="#FFD700" />
+        <stop offset="100%" stop-color="#DAA520" />
+      </linearGradient>
+      <linearGradient id="flower-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FFB7C5" />
+        <stop offset="50%" stop-color="#E87AA4" />
+        <stop offset="100%" stop-color="#C4A8D8" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- ===== THREE.JS CANVAS (Background Layer) ===== -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- ===== LOADING SCREEN ===== -->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <div class="loader-flower">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="url(#flower-grad)">
+          <path
+            d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3-3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0-3 3 3 3 0 0 0 6 0 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0 3-3 3 3 0 0 0-6 0 3 3 0 0 0-3-3z" />
+          <circle cx="12" cy="12" r="2" fill="#FFD700" />
+        </svg>
+      </div>
+      <p class="loader-text">Preparing something magical...</p>
+      <div class="loader-bar">
+        <div class="loader-progress" id="loader-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MUTE / UNMUTE BUTTON ===== -->
+  <button id="mute-btn" class="mute-btn" title="Toggle Sound">
+    <span class="mute-icon" id="mute-icon">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+        <path
+          d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+      </svg>
+    </span>
+  </button>
+
+  <!-- ===== SCENE: LANDING ===== -->
+  <div id="scene-landing" class="scene active">
+    <div class="scene-content landing-content">
+
+      <!-- 3D Rotatable Gift Box -->
+      <div class="gift-container" id="gift-container">
+        <div class="gift-glow"></div>
+        <p class="gift-hint">Drag to rotate</p>
+
+        <div class="gift-box-3d" id="gift-box">
+          <!-- 3D Lid -->
+          <div class="gift-lid-3d" id="gift-lid">
+            <div class="lid-face lid-top">
+              <div class="lid-ribbon-v"></div>
+              <div class="lid-ribbon-h"></div>
+              <div class="bow">
+                <div class="bow-loop bow-left"></div>
+                <div class="bow-loop bow-right"></div>
+                <div class="bow-knot"></div>
+                <div class="bow-tail bow-tail-l"></div>
+                <div class="bow-tail bow-tail-r"></div>
+              </div>
+            </div>
+            <div class="lid-face lid-front">
+              <div class="lid-ribbon-v"></div>
+            </div>
+            <div class="lid-face lid-back">
+              <div class="lid-ribbon-v"></div>
+            </div>
+            <div class="lid-face lid-left">
+              <div class="lid-ribbon-v"></div>
+            </div>
+            <div class="lid-face lid-right">
+              <div class="lid-ribbon-v"></div>
+            </div>
+          </div>
+
+          <!-- 3D Body Faces -->
+          <div class="gift-body-3d" id="gift-body">
+            <div class="box-face face-front">
+              <div class="body-ribbon-v"></div>
+              <div class="body-ribbon-h"></div>
+            </div>
+            <div class="box-face face-back">
+              <div class="body-ribbon-v"></div>
+              <div class="body-ribbon-h"></div>
+            </div>
+            <div class="box-face face-left">
+              <div class="body-ribbon-v"></div>
+              <div class="body-ribbon-h"></div>
+            </div>
+            <div class="box-face face-right">
+              <div class="body-ribbon-v"></div>
+              <div class="body-ribbon-h"></div>
+            </div>
+            <div class="box-face face-bottom"></div>
+          </div>
+        </div>
+
+        <!-- Sparkles injected by JS -->
+        <div class="gift-sparkles" id="gift-sparkles"></div>
+      </div>
+
+      <h1 class="landing-title" id="landing-title">
+        Happy Birthday po hehe
+        <svg class="inline-heart-svg" viewBox="0 0 24 24" width="30" height="30" style="vertical-align:-4px;">
+          <path fill="url(#pink-gold-grad)"
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+      </h1>
+
+      <button class="open-gift-btn" id="open-gift-btn">
+        <span class="btn-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M20 12v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8" fill="rgba(255,215,0,0.15)" stroke="#FFD700" />
+            <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v4H4V6z" fill="rgba(232,122,164,0.4)" stroke="#FFD700" />
+            <path d="M12 22V6M12 6H7.5a2.5 2.5 0 010-5C11 1 12 6 12 6zM12 6h4.5a2.5 2.5 0 000-5C13 1 12 6 12 6z"
+              stroke="#FFD700" />
+          </svg>
+        </span>
+        <span class="btn-text">E open na nganii</span>
+        <div class="btn-shine"></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== BLOOM / FLASH TRANSITION OVERLAY ===== -->
+  <div class="bloom-flash" id="bloom-flash"></div>
+
+  <!-- ===== SCENE: FLOATING MEMORIES ===== -->
+  <div id="scene-memories" class="scene">
+    <div class="scene-content memories-content">
+      <h2 class="memories-title" id="memories-title">Cake na guro ni hehe btw mwuaappsss ily:></h2>
+      <button class="continue-btn" id="memories-continue-btn">
+        <span>Continue</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SCENE: LOVE LETTER ===== -->
+  <div id="scene-letter" class="scene">
+    <div class="scene-content letter-content">
+
+      <!-- Envelope -->
+      <div class="envelope-wrapper" id="envelope-wrapper">
+        <div class="envelope" id="envelope">
+          <div class="envelope-back"></div>
+          <div class="envelope-flap" id="envelope-flap"></div>
+          <div class="wax-seal" id="wax-seal">
+            <span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#FFCDD2">
+                <path
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </span>
+          </div>
+          <div class="envelope-front"></div>
+          <!-- Floral accents -->
+          <div class="envelope-flower ef-tl">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="url(#flower-grad)">
+              <path
+                d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3-3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0-3 3 3 3 0 0 0 6 0 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0 3-3 3 3 0 0 0-6 0 3 3 0 0 0-3-3z" />
+              <circle cx="12" cy="12" r="2" fill="#FFD700" />
+            </svg>
+          </div>
+          <div class="envelope-flower ef-tr">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="url(#pink-gold-grad)">
+              <path
+                d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3-3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0-3 3 3 3 0 0 0 6 0 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0 3-3 3 3 0 0 0-6 0 3 3 0 0 0-3-3z" />
+              <circle cx="12" cy="12" r="2" fill="#FFD700" />
+            </svg>
+          </div>
+          <div class="envelope-flower ef-bl">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="url(#gold-grad)">
+              <path
+                d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3-3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0-3 3 3 3 0 0 0 6 0 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0 3-3 3 3 0 0 0-6 0 3 3 0 0 0-3-3z" />
+              <circle cx="12" cy="12" r="2" fill="#FFFFFF" />
+            </svg>
+          </div>
+          <div class="envelope-flower ef-br">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="url(#flower-grad)">
+              <path
+                d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3-3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0-3 3 3 3 0 0 0 6 0 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0 3-3 3 3 0 0 0-6 0 3 3 0 0 0-3-3z" />
+              <circle cx="12" cy="12" r="2" fill="#FFD700" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <p class="letter-instruction" id="letter-instruction">Click the envelope to open</p>
+
+      <!-- Letter Paper (hidden until envelope opens) -->
+      <div class="letter-paper" id="letter-paper">
+        <div class="letter-ornament letter-ornament-top">❦</div>
+        <div class="letter-body" id="letter-body"></div>
+        <div class="letter-ornament letter-ornament-bottom">❦</div>
+      </div>
+
+      <button class="continue-btn glow-btn" id="letter-continue-btn" style="display:none;">
+        <span>Continue Our Journey</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SCENE: MUSIC & VIDEO GARDEN ===== -->
+  <div id="scene-garden" class="scene">
+    <div class="scene-content garden-content">
+      <h2 class="garden-title">
+        <svg class="inline-flower-svg" width="28" height="28" viewBox="0 0 24 24" fill="url(#flower-grad)"
+          style="vertical-align:-4px;">
+          <path
+            d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3-3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0-3 3 3 3 0 0 0 6 0 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0 3-3 3 3 0 0 0-6 0 3 3 0 0 0-3-3z" />
+          <circle cx="12" cy="12" r="2" fill="#FFD700" />
+        </svg>
+        Cutiee Mini Player
+        <svg class="inline-flower-svg" width="28" height="28" viewBox="0 0 24 24" fill="url(#flower-grad)"
+          style="vertical-align:-4px;">
+          <path
+            d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3-3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0-3 3 3 3 0 0 0 6 0 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0 3-3 3 3 0 0 0-6 0 3 3 0 0 0-3-3z" />
+          <circle cx="12" cy="12" r="2" fill="#FFD700" />
+        </svg>
+      </h2>
+
+      <!-- Music Player -->
+      <div class="music-player" id="music-player">
+        <div class="player-glass">
+          <!-- Album Art (Spinning Vinyl Disk) -->
+          <div class="album-art-wrap">
+            <div class="album-art" id="album-art">
+              <div class="vinyl-grooves"></div>
+              <div class="album-cover-wrap">
+                <img src="assets/images/memories/memory1.jpg" alt="Album Cover" class="album-cover-img"
+                  id="album-cover-img">
+                <div class="vinyl-center-spindle"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Song Info -->
+          <div class="player-info">
+            <p class="song-title" id="song-title">Our Special Song</p>
+            <p class="song-artist" id="song-artist">With Love</p>
+          </div>
+          <!-- Progress -->
+          <div class="progress-wrap">
+            <div class="progress-container" id="progress-container">
+              <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="time-display">
+              <span id="current-time">0:00</span>
+              <span id="total-time">0:00</span>
+            </div>
+          </div>
+          <!-- Main Controls -->
+          <div class="player-controls">
+            <button class="ctrl-btn" id="prev-btn" title="Previous">
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <path fill="currentColor" d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+              </svg>
+            </button>
+            <button class="ctrl-btn play-btn" id="play-btn" title="Play">
+              <svg class="play-icon" viewBox="0 0 24 24" width="28" height="28">
+                <path fill="currentColor" d="M8 5v14l11-7z" />
+              </svg>
+              <svg class="pause-icon" viewBox="0 0 24 24" width="28" height="28" style="display:none">
+                <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+              </svg>
+            </button>
+            <button class="ctrl-btn" id="next-btn" title="Next">
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <path fill="currentColor" d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+              </svg>
+            </button>
+          </div>
+          <!-- Extra Controls -->
+          <div class="player-extras">
+            <button class="ctrl-btn small" id="loop-btn" title="Loop">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 2l4 4-4 4" />
+                <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+                <path d="M7 22l-4-4 4-4" />
+                <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+              </svg>
+            </button>
+            <div class="volume-wrap">
+              <span class="vol-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+                </svg>
+              </span>
+              <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="80">
+            </div>
+            <button class="ctrl-btn small" id="playlist-toggle-btn" title="Playlist">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round">
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="18" x2="14" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <!-- Equalizer -->
+          <div class="equalizer" id="equalizer">
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+          </div>
+        </div>
+        <!-- Playlist Dropdown -->
+        <div class="playlist-panel" id="playlist-panel">
+          <h3 class="playlist-heading">Playlist</h3>
+          <ul class="playlist-list" id="playlist-list"></ul>
+        </div>
+      </div>
+
+      <!-- Video Player -->
+      <div class="video-player" id="video-player">
+        <div class="video-glass">
+          <div class="video-wrapper">
+            <video id="main-video" preload="metadata" playsinline>
+              <source src="assets/videos/birthday-video.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-overlay" id="video-play-overlay">
+              <div class="video-play-circle">
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="video-controls" id="video-controls">
+            <button class="v-ctrl" id="video-play-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+            <div class="video-progress-wrap" id="video-progress-wrap">
+              <div class="video-progress" id="video-progress"></div>
+            </div>
+            <span class="video-time" id="video-time">0:00 / 0:00</span>
+            <button class="v-ctrl" id="fullscreen-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="continue-btn glow-btn" id="garden-continue-btn">
+        <span>See Your Final Surprise</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SCENE: FINALE (Magical Night Blossoming Flowers) ===== -->
+  <div id="scene-finale" class="scene not-loaded">
+    <div class="night"></div>
+
+    <div class="flowers">
+      <div class="flower flower--1">
+        <div class="flower__leafs flower__leafs--1">
+          <div class="flower__leaf flower__leaf--1"></div>
+          <div class="flower__leaf flower__leaf--2"></div>
+          <div class="flower__leaf flower__leaf--3"></div>
+          <div class="flower__leaf flower__leaf--4"></div>
+          <div class="flower__white-circle"></div>
+
+          <div class="flower__light flower__light--1"></div>
+          <div class="flower__light flower__light--2"></div>
+          <div class="flower__light flower__light--3"></div>
+          <div class="flower__light flower__light--4"></div>
+          <div class="flower__light flower__light--5"></div>
+          <div class="flower__light flower__light--6"></div>
+          <div class="flower__light flower__light--7"></div>
+          <div class="flower__light flower__light--8"></div>
+        </div>
+        <div class="flower__line">
+          <div class="flower__line__leaf flower__line__leaf--1"></div>
+          <div class="flower__line__leaf flower__line__leaf--2"></div>
+          <div class="flower__line__leaf flower__line__leaf--3"></div>
+          <div class="flower__line__leaf flower__line__leaf--4"></div>
+          <div class="flower__line__leaf flower__line__leaf--5"></div>
+          <div class="flower__line__leaf flower__line__leaf--6"></div>
+        </div>
+      </div>
+
+      <div class="flower flower--2">
+        <div class="flower__leafs flower__leafs--2">
+          <div class="flower__leaf flower__leaf--1"></div>
+          <div class="flower__leaf flower__leaf--2"></div>
+          <div class="flower__leaf flower__leaf--3"></div>
+          <div class="flower__leaf flower__leaf--4"></div>
+          <div class="flower__white-circle"></div>
+
+          <div class="flower__light flower__light--1"></div>
+          <div class="flower__light flower__light--2"></div>
+          <div class="flower__light flower__light--3"></div>
+          <div class="flower__light flower__light--4"></div>
+          <div class="flower__light flower__light--5"></div>
+          <div class="flower__light flower__light--6"></div>
+          <div class="flower__light flower__light--7"></div>
+          <div class="flower__light flower__light--8"></div>
+        </div>
+        <div class="flower__line">
+          <div class="flower__line__leaf flower__line__leaf--1"></div>
+          <div class="flower__line__leaf flower__line__leaf--2"></div>
+          <div class="flower__line__leaf flower__line__leaf--3"></div>
+          <div class="flower__line__leaf flower__line__leaf--4"></div>
+        </div>
+      </div>
+
+      <div class="flower flower--3">
+        <div class="flower__leafs flower__leafs--3">
+          <div class="flower__leaf flower__leaf--1"></div>
+          <div class="flower__leaf flower__leaf--2"></div>
+          <div class="flower__leaf flower__leaf--3"></div>
+          <div class="flower__leaf flower__leaf--4"></div>
+          <div class="flower__white-circle"></div>
+
+          <div class="flower__light flower__light--1"></div>
+          <div class="flower__light flower__light--2"></div>
+          <div class="flower__light flower__light--3"></div>
+          <div class="flower__light flower__light--4"></div>
+          <div class="flower__light flower__light--5"></div>
+          <div class="flower__light flower__light--6"></div>
+          <div class="flower__light flower__light--7"></div>
+          <div class="flower__light flower__light--8"></div>
+        </div>
+        <div class="flower__line">
+          <div class="flower__line__leaf flower__line__leaf--1"></div>
+          <div class="flower__line__leaf flower__line__leaf--2"></div>
+          <div class="flower__line__leaf flower__line__leaf--3"></div>
+          <div class="flower__line__leaf flower__line__leaf--4"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d:1.2s">
+        <div class="flower__g-long">
+          <div class="flower__g-long__top"></div>
+          <div class="flower__g-long__bottom"></div>
+        </div>
+      </div>
+
+      <div class="growing-grass">
+        <div class="flower__grass flower__grass--1">
+          <div class="flower__grass--top"></div>
+          <div class="flower__grass--bottom"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+          <div class="flower__grass__overlay"></div>
+        </div>
+      </div>
+
+      <div class="growing-grass">
+        <div class="flower__grass flower__grass--2">
+          <div class="flower__grass--top"></div>
+          <div class="flower__grass--bottom"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+          <div class="flower__grass__overlay"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d:2.4s">
+        <div class="flower__g-right flower__g-right--1">
+          <div class="leaf"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d:2.8s">
+        <div class="flower__g-right flower__g-right--2">
+          <div class="leaf"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d:2.8s">
+        <div class="flower__g-front">
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--1">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--2">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--3">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--4">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--5">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--6">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--7">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--8">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__line"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d:3.2s">
+        <div class="flower__g-fr">
+          <div class="leaf"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--1"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--2"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--3"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--4"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--5"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--6"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--7"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--8"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--0">
+        <div class="grow-ans" style="--d:3s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d:2.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d:3.4s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d:3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--1">
+        <div class="grow-ans" style="--d:3.6s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d:3.8s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d:4s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.2s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--2">
+        <div class="grow-ans" style="--d:4s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.4s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--3">
+        <div class="grow-ans" style="--d:4s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d:3s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d:3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--4">
+        <div class="grow-ans" style="--d:4s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d:3s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d:3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--5">
+        <div class="grow-ans" style="--d:4s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d:3s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d:3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--6">
+        <div class="grow-ans" style="--d:4.2s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.4s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.6s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d:4.8s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--7">
+        <div class="grow-ans" style="--d:3s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d:3.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d:3.5s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d:3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-content finale-content">
+      <!-- Celestial Header (Glowing Moon & Stars) -->
+      <div class="finale-celestial-header" id="celestial-header">
+        <div class="moon-wrap">
+          <svg class="glowing-moon-svg" viewBox="0 0 100 100" width="76" height="76">
+            <defs>
+              <radialGradient id="moon-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#FFF3D6" stop-opacity="1" />
+                <stop offset="45%" stop-color="#FFD700" stop-opacity="0.7" />
+                <stop offset="100%" stop-color="#FFD700" stop-opacity="0" />
+              </radialGradient>
+              <linearGradient id="moon-body-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFF8E7" />
+                <stop offset="50%" stop-color="#FFE082" />
+                <stop offset="100%" stop-color="#FFD700" />
+              </linearGradient>
+            </defs>
+            <!-- Outer Aura Glow -->
+            <circle cx="50" cy="50" r="48" fill="url(#moon-glow)" />
+            <!-- Crescent Moon -->
+            <path d="M 58 12 A 38 38 0 1 0 88 65 A 32 32 0 1 1 58 12 Z" fill="url(#moon-body-grad)"
+              filter="drop-shadow(0 0 12px rgba(255,215,0,0.9))" />
+          </svg>
+          <div class="moon-stars">
+            <span class="m-star s1">✦</span>
+            <span class="m-star s2">★</span>
+            <span class="m-star s3">✦</span>
+          </div>
+        </div>
+        <p class="celestial-subtitle">
+          <span class="sub-star">💖</span> July, 24, 2007 <span class="sub-star">💖</span>
+        </p>
+      </div>
+
+      <div class="finale-text-wrap" id="finale-text-wrap">
+        <p class="finale-line fl-1">
+          Happy 19th Birthday, Angelica
+          <svg class="inline-heart-svg" viewBox="0 0 24 24" width="36" height="36" style="vertical-align:-4px;">
+            <path fill="url(#pink-gold-grad)"
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+        </p>
+        <p class="finale-line fl-2">Thank you for being the most beautiful part of my life.</p>
+        <p class="finale-line fl-3">I hope this little surprise made you smile.</p>
+        <p class="finale-line fl-4">
+          I love you yesterday, today, and always.
+          <svg class="inline-flower-svg" width="24" height="24" viewBox="0 0 24 24" fill="url(#flower-grad)"
+            style="vertical-align:-4px;">
+            <path
+              d="M12 3a3 3 0 0 0-3 3 3 3 0 0 0-3-3 3 3 0 0 0 0 6 3 3 0 0 0 3 3 3 3 0 0 0-3 3 3 3 0 0 0 6 0 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0 3-3 3 3 0 0 0-6 0 3 3 0 0 0-3-3z" />
+            <circle cx="12" cy="12" r="2" fill="#FFD700" />
+          </svg>
+          <svg class="inline-sparkle-svg" width="22" height="22" viewBox="0 0 24 24" fill="#FFD700"
+            style="vertical-align:-3px;">
+            <path d="M12 0l3.09 8.91L24 12l-8.91 3.09L12 24l-3.09-8.91L0 12l8.91-3.09z" />
+          </svg>
+        </p>
+      </div>
+      <!-- Lanterns + hearts injected by JS -->
+      <div class="lanterns-container" id="lanterns-container"></div>
+    </div>
+  </div>
+
+  <!-- ===== AUDIO ELEMENTS ===== -->
+  <audio id="ambient-audio" loop preload="auto">
+    <source src="assets/music/ambient.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="music-audio" preload="auto">
+    <source src="assets/music/song1.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ===== MAIN APPLICATION (ES Module) ===== -->
+  <script type="module" src="js/main.js"></script>
+
+</body>
+
+</html>
