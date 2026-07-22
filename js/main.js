@@ -86,7 +86,7 @@ function simulateLoading() {
           const muteBtn = document.getElementById('mute-btn');
           if (muteBtn) muteBtn.classList.add('visible');
         }
-      }, 500);
+      }, 700);
     }
   }, 200);
 }
